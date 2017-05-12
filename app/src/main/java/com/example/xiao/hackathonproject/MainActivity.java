@@ -14,4 +14,8 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Fuck the world!");
     }
 
+    private void xiao()
+    {
+        System.out.println("This is Xiao");
+    }
 }
