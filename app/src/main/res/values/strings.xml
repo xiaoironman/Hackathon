@@ -5,4 +5,5 @@
     <string name="button_call_accurate_map">Co-GeoLocation</string>
     <string name="title_activity_rough_location">Map</string>
     <string name="satellite_info_title">Satellite In View:</string>
+    <string name="reference_list_title">Choose a reference:</string>
 </resources>
