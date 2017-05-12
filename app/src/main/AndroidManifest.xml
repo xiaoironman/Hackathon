@@ -32,7 +32,8 @@
 
         <activity
             android:name=".RoughLocation"
-            android:label="@string/title_activity_rough_location"></activity>
+            android:label="@string/title_activity_rough_location" />
+        <activity android:name=".SatelliteInformation"></activity>
     </application>
 
 </manifest>

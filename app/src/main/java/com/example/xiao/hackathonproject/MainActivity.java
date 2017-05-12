@@ -45,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(this,RoughLocation.class);
         startActivity(myIntent);
     }
-
+    public void onClick2(View v)
+    {
+        Intent myIntent = new Intent(this,SatelliteInformation.class);
+        startActivity(myIntent);
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {

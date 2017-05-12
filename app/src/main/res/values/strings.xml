@@ -4,4 +4,5 @@
     <string name="button_call_sat_info">Satellites Information</string>
     <string name="button_call_accurate_map">Co-GeoLocation</string>
     <string name="title_activity_rough_location">Map</string>
+    <string name="satellite_info_title">Satellite In View:</string>
 </resources>
