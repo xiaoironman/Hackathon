@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println("Fuck the world!");
+        System.out.println("FUCK GITHUB");
     }
 
     private void xiao()
