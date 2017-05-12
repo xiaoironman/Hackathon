@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.xiao.hackathonproject.MainActivity">
 
+    <include layout="@layout/header"
+        android:id="@+id/CogeoToolbar"/>
+
     <Button
         android:id="@+id/button2"
         android:layout_width="368dp"
@@ -37,13 +40,14 @@
         android:id="@+id/button"
         android:layout_width="368dp"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="150dp"
         android:background="@android:color/holo_orange_light"
         android:text="@string/button_call_rough_map"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>
