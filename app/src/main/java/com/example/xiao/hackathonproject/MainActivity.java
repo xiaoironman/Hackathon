@@ -19,4 +19,12 @@ public class MainActivity extends AppCompatActivity {
     {
         System.out.println("This is Xiao");
     }
+    private void xiao1()
+    {
+        System.out.println("This is Xiao");
+    }
+    private void xiao2()
+    {
+        System.out.println("This is Xiao");
+    }
 }
