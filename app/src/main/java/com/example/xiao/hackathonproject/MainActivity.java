@@ -11,11 +11,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        xiao();
+        System.out.println("Fuck the world!");
     }
-private void xiao()
-{
-    System.out.println("I'm Xiao!");
-}
 
 }
