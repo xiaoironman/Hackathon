@@ -12,4 +12,6 @@
     <string name="accuracy">Accuracy:</string>
     <string name="provider">Provider:</string>
     <string name="see_on_map">See My Location On The Map</string>
+    <string name="first_fix">Time to First Fix:</string>
+    <string name="sat_count">Number of satellites:</string>
 </resources>

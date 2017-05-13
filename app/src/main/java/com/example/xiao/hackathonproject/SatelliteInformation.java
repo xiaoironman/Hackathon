@@ -3,6 +3,7 @@ package com.example.xiao.hackathonproject;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,11 +21,14 @@ public class SatelliteInformation extends AppCompatActivity {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private GnssStatus.Callback gnssStatusListener;
 
     private TextView mLatitude;
     private TextView mLongitude;
     private TextView mAccuracy;
     private TextView mProvider;
+    private TextView mFirstFix;
+    private TextView mSatCount;
     private Switch switchListener;
 
     @Override
@@ -59,6 +63,28 @@ public class SatelliteInformation extends AppCompatActivity {
             }
         };
 
+        // define a GNSS status listener that contains all information about tracked satellites
+        gnssStatusListener = new GnssStatus.Callback() {
+            public void onStarted() {
+
+            }
+
+            public void onStopped() {
+
+            }
+
+            public void onFirstFix(int ttffMillis) {
+                // Called when the GNSS system has received its first fix since starting
+                firstFixAcquired(ttffMillis);
+            }
+
+            public void onSatelliteStatusChanged(GnssStatus status) {
+                // Called periodically to report GNSS satellite status
+                onGnssStatusChanged(status);
+            }
+        };
+
+        // initialize switch's functionality
         switchListener = (Switch) findViewById(R.id.listener_switch);
         switchListener.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -73,18 +99,25 @@ public class SatelliteInformation extends AppCompatActivity {
             }
         });
 
+        // get references to TextViews in the layout
         mLatitude = (TextView) findViewById(R.id.latitude);
         mLongitude = (TextView) findViewById(R.id.longitude);
         mAccuracy = (TextView) findViewById(R.id.accuracy);
         mProvider = (TextView) findViewById(R.id.provider);
+        mFirstFix = (TextView) findViewById(R.id.first_fix);
+        mSatCount = (TextView) findViewById(R.id.sat_count);
     }
 
+    // when we leave the activity (back and home button)
     @Override
     protected void onStop() {
         super.onStop();
         switchListener.setChecked(false);
     }
 
+    // request location updates for the listener if we have permission
+    // 0, 0 means we want updates as often as possible
+    // register also GNSS status callback to the manager = request GNSS status changes for the listener
     protected void startLocationListening() {
         // Register the listener with the Location Manager to receive location updates
         int permissionCheck = ContextCompat.checkSelfPermission(this,
@@ -93,17 +126,24 @@ public class SatelliteInformation extends AppCompatActivity {
             Toast.makeText(this, "Permission is not granted.", Toast.LENGTH_LONG).show();
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.registerGnssStatusCallback(gnssStatusListener);
         }
     }
 
+    // stop listening to location updates and clear TextViews
+    // stop listening to GNSS status changes
     protected void stopLocationListening() {
         locationManager.removeUpdates(locationListener);
+        locationManager.unregisterGnssStatusCallback(gnssStatusListener);
         mLatitude.setText(getString(R.string.latitude));
         mLongitude.setText(getString(R.string.longitude));
         mAccuracy.setText(getString(R.string.accuracy));
         mProvider.setText(getString(R.string.provider));
+        mFirstFix.setText(getString(R.string.first_fix));
+        mSatCount.setText(getString(R.string.sat_count));
     }
 
+    // after getting a new location
     protected void makeUseOfNewLocation(Location location) {
         if (location != null) {
             mLatitude.setText(String.format("%s %f °", getString(R.string.latitude), location.getLatitude()));
@@ -129,5 +169,14 @@ public class SatelliteInformation extends AppCompatActivity {
             case LocationProvider.OUT_OF_SERVICE: providerStatus = "Out of Service"; break;
         }
         Toast.makeText(this, String.format("%s is %s.", provider, providerStatus), Toast.LENGTH_LONG).show();
+    }
+
+    protected void onGnssStatusChanged(GnssStatus status) {
+        mSatCount.setText(String.format("%s %d", getString(R.string.sat_count), status.getSatelliteCount()));
+    }
+
+    protected void firstFixAcquired(int time) {
+        //time is in ms
+        mFirstFix.setText(String.format("%s %d ms", getString(R.string.first_fix), time));
     }
 }
