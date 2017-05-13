@@ -16,4 +16,5 @@
     <string name="sat_count">Number of satellites:</string>
     <string name="to_sat_list">Satellites in List View</string>
     <string name="gnss_measurement_status">GNSS Measurement Status:</string>
+    <string name="nav_msg_status">GNSS Navigation Message Status:</string>
 </resources>

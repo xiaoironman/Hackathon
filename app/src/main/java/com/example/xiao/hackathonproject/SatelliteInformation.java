@@ -25,8 +25,6 @@ import android.widget.Toast;
 
 public class SatelliteInformation extends AppCompatActivity {
 
-    protected int satCount = -1;
-
     private LocationManager locationManager;
     private LocationListener locationListener;
     private GnssStatus.Callback gnssStatusListener;
@@ -40,6 +38,8 @@ public class SatelliteInformation extends AppCompatActivity {
     private TextView mProvider;
     private TextView mFirstFix;
     private TextView mSatCount;
+    private TextView mGNSSMeasurementsStatus;
+    private TextView mNavMsgStatus;
     private Switch switchListener;
 
     //Connection to the button(to satellite list view) is below:
@@ -123,6 +123,7 @@ public class SatelliteInformation extends AppCompatActivity {
 
             public void onStatusChanged(int status) {
                 // Returns the latest status of the GNSS Navigation Messages sub-system
+                gnssNavigationMessageStatusChanged(status);
             }
         };
 
@@ -156,6 +157,8 @@ public class SatelliteInformation extends AppCompatActivity {
         mProvider = (TextView) findViewById(R.id.provider);
         mFirstFix = (TextView) findViewById(R.id.first_fix);
         mSatCount = (TextView) findViewById(R.id.sat_count);
+        mNavMsgStatus = (TextView) findViewById(R.id.nav_msg_status);
+        mGNSSMeasurementsStatus = (TextView) findViewById(R.id.gnss_measurement_status);
     }
 
     // when we leave the activity (back and home button)
@@ -179,6 +182,7 @@ public class SatelliteInformation extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             locationManager.registerGnssStatusCallback(gnssStatusListener);
             locationManager.registerGnssMeasurementsCallback(gnssMeasurementsEventsListener);
+            locationManager.registerGnssNavigationMessageCallback(gnssNavigationMessageListener);
         }
     }
 
@@ -193,6 +197,8 @@ public class SatelliteInformation extends AppCompatActivity {
         mProvider.setText(getString(R.string.provider));
         mFirstFix.setText(getString(R.string.first_fix));
         mSatCount.setText(getString(R.string.sat_count));
+        mGNSSMeasurementsStatus.setText(getString(R.string.gnss_measurement_status));
+        mNavMsgStatus.setText(getString(R.string.nav_msg_status));
     }
 
     // after getting a new location
@@ -225,7 +231,7 @@ public class SatelliteInformation extends AppCompatActivity {
 
     protected void onGnssStatusChanged(GnssStatus status) {
         mSatCount.setText(String.format("%s %d", getString(R.string.sat_count), status.getSatelliteCount()));
-        satCount = status.getSatelliteCount();
+
     }
 
     protected void firstFixAcquired(int time) {
@@ -244,6 +250,16 @@ public class SatelliteInformation extends AppCompatActivity {
             case GnssMeasurementsEvent.Callback.STATUS_READY: gnssStatus = "GNSS Measurements are successfully being tracked"; break;
             case GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED: gnssStatus = "GNSS provider of Location is disabled"; break;
         }
+        mGNSSMeasurementsStatus.setText(String.format("%s %s", getString(R.string.gnss_measurement_status), gnssStatus));
+    }
 
+    protected void gnssNavigationMessageStatusChanged(int status) {
+        String gnssNavMsgStatus = "Unknown";
+        switch(status) {
+            case GnssNavigationMessage.Callback.STATUS_NOT_SUPPORTED: gnssNavMsgStatus = "The system does not support tracking of GNSS Navigation Messages"; break;
+            case GnssNavigationMessage.Callback.STATUS_READY: gnssNavMsgStatus = "GNSS Navigation Messages are successfully being tracked"; break;
+            case GnssNavigationMessage.Callback.STATUS_LOCATION_DISABLED: gnssNavMsgStatus = "GNSS provider of Location is disabled"; break;
+        }
+        mNavMsgStatus.setText(String.format("%s %s", getString(R.string.nav_msg_status), gnssNavMsgStatus));
     }
 }
