@@ -4,45 +4,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import java.util.function.ToDoubleBiFunction;
+
 
 public class SatelliteList extends AppCompatActivity {
 
+    private int NumberOfSatellites = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_satellite_list);
 
         ListView listView = (ListView) findViewById(R.id.listView);
-    }
+        final TextView textViewOfSatInfo = (TextView) findViewById(R.id.textViewInSatList);
 
-    //TODO: enter the string as the list of the name of the satellites
-    String[] strings = new String[10];
+        //TODO: enter the string as the list of the name of the satellites
+        String[] SatelliteNames = new String[NumberOfSatellites];
 
+        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, SatelliteNames);
+        listView.setAdapter(adapter);
 
-    class CustomAdapter extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return strings.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
-        }
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String clickedSatelliteName=String.valueOf(parent.getItemAtPosition(position));
+                        textViewOfSatInfo.setText(clickedSatelliteName);
+                    }
+                }
+        );
     }
 }

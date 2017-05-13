@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 public class SatelliteInformation extends AppCompatActivity {
 
+    protected int satCount = -1;
+
     private LocationManager locationManager;
     private LocationListener locationListener;
     private GnssStatus.Callback gnssStatusListener;
@@ -223,6 +225,7 @@ public class SatelliteInformation extends AppCompatActivity {
 
     protected void onGnssStatusChanged(GnssStatus status) {
         mSatCount.setText(String.format("%s %d", getString(R.string.sat_count), status.getSatelliteCount()));
+        satCount = status.getSatelliteCount();
     }
 
     protected void firstFixAcquired(int time) {
