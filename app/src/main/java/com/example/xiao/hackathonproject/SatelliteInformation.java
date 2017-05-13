@@ -31,6 +31,7 @@ public class SatelliteInformation extends AppCompatActivity {
     private GnssMeasurementsEvent.Callback gnssMeasurementsEventsListener;
     private GnssNavigationMessage.Callback gnssNavigationMessageListener;
     private OnNmeaMessageListener nmeaMessageListener;
+    private int[] lastGnssStatus;
 
     private TextView mLatitude;
     private TextView mLongitude;
@@ -46,6 +47,7 @@ public class SatelliteInformation extends AppCompatActivity {
     public void onClickToSatList(View v)
     {
         Intent myIntent = new Intent(this,SatelliteList.class);
+        myIntent.putExtra("SatInfo",lastGnssStatus);
         startActivity(myIntent);
     }
 
@@ -231,7 +233,10 @@ public class SatelliteInformation extends AppCompatActivity {
 
     protected void onGnssStatusChanged(GnssStatus status) {
         mSatCount.setText(String.format("%s %d", getString(R.string.sat_count), status.getSatelliteCount()));
-
+        lastGnssStatus = new int[status.getSatelliteCount()];
+        for (int i = 0; i < status.getSatelliteCount(); i++) {
+            lastGnssStatus[i] = status.getSvid(i);
+        }
     }
 
     protected void firstFixAcquired(int time) {
