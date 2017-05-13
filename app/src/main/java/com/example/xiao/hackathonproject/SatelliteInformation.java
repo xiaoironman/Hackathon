@@ -4,11 +4,15 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.location.OnNmeaMessageListener;
+import android.support.annotation.IntDef;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +28,9 @@ public class SatelliteInformation extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private GnssStatus.Callback gnssStatusListener;
+    private GnssMeasurementsEvent.Callback gnssMeasurementsEventsListener;
+    private GnssNavigationMessage.Callback gnssNavigationMessageListener;
+    private OnNmeaMessageListener nmeaMessageListener;
 
     private TextView mLatitude;
     private TextView mLongitude;
@@ -72,14 +79,27 @@ public class SatelliteInformation extends AppCompatActivity {
             }
         };
 
+        // define a GNSS raw measurements listener that contains raw and computed data identifying a satellite
+        gnssMeasurementsEventsListener = new GnssMeasurementsEvent.Callback() {
+            public void onGnssMeasurementsReceived(GnssMeasurementsEvent eventArgs) {
+                // Reports the latest collected GNSS measurements
+                gnssMeasurementsReceived(eventArgs);
+            }
+
+            public void onStatusChanged(int status) {
+                // Reports the latest status of the GNSS measurements sub-system
+                gnssMeasurementsStatusChanged(status);
+            }
+        };
+
         // define a GNSS status listener that contains all information about tracked satellites
         gnssStatusListener = new GnssStatus.Callback() {
             public void onStarted() {
-
+                super.onStarted();
             }
 
             public void onStopped() {
-
+                super.onStopped();
             }
 
             public void onFirstFix(int ttffMillis) {
@@ -90,6 +110,25 @@ public class SatelliteInformation extends AppCompatActivity {
             public void onSatelliteStatusChanged(GnssStatus status) {
                 // Called periodically to report GNSS satellite status
                 onGnssStatusChanged(status);
+            }
+        };
+
+        // define a GNSS Navigation message listener that contains all information about Navigation Messages
+        gnssNavigationMessageListener = new GnssNavigationMessage.Callback() {
+            public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
+                // Returns the latest collected GNSS Navigation Message
+            }
+
+            public void onStatusChanged(int status) {
+                // Returns the latest status of the GNSS Navigation Messages sub-system
+            }
+        };
+
+        // define a listener that receives NMEA sentences from the GNSS
+        nmeaMessageListener = new OnNmeaMessageListener() {
+            @Override
+            public void onNmeaMessage(String message, long timestamp) {
+                // Called when NMEA message is received
             }
         };
 
@@ -127,6 +166,7 @@ public class SatelliteInformation extends AppCompatActivity {
     // request location updates for the listener if we have permission
     // 0, 0 means we want updates as often as possible
     // register also GNSS status callback to the manager = request GNSS status changes for the listener
+    // also GNSS measurements callback is registered, listening to raw data
     protected void startLocationListening() {
         // Register the listener with the Location Manager to receive location updates
         int permissionCheck = ContextCompat.checkSelfPermission(this,
@@ -136,6 +176,7 @@ public class SatelliteInformation extends AppCompatActivity {
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             locationManager.registerGnssStatusCallback(gnssStatusListener);
+            locationManager.registerGnssMeasurementsCallback(gnssMeasurementsEventsListener);
         }
     }
 
@@ -187,5 +228,19 @@ public class SatelliteInformation extends AppCompatActivity {
     protected void firstFixAcquired(int time) {
         //time is in ms
         mFirstFix.setText(String.format("%s %d ms", getString(R.string.first_fix), time));
+    }
+
+    protected void gnssMeasurementsReceived(GnssMeasurementsEvent event) {
+        // Raw measurements are received!!!
+    }
+
+    protected void gnssMeasurementsStatusChanged(int status) {
+        String gnssStatus = "Unknown";
+        switch(status) {
+            case GnssMeasurementsEvent.Callback.STATUS_NOT_SUPPORTED: gnssStatus = "The system does not support tracking of GNSS Measurements"; break;
+            case GnssMeasurementsEvent.Callback.STATUS_READY: gnssStatus = "GNSS Measurements are successfully being tracked"; break;
+            case GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED: gnssStatus = "GNSS provider of Location is disabled"; break;
+        }
+
     }
 }
