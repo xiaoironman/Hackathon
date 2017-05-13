@@ -6,4 +6,9 @@
     <string name="title_activity_rough_location">Map</string>
     <string name="satellite_info_title">Satellite In View:</string>
     <string name="reference_list_title">Choose a reference:</string>
+    <string name="location_listener">GPS Location Listener:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="accuracy">Accuracy:</string>
+    <string name="provider">Provider:</string>
 </resources>
