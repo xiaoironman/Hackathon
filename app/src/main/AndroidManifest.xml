@@ -3,12 +3,10 @@
     package="com.example.xiao.hackathonproject">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.location.gps" />
 
@@ -42,7 +40,8 @@
             android:name=".RoughLocation"
             android:label="@string/title_activity_rough_location" />
         <activity android:name=".SatelliteInformation" />
-        <activity android:name=".ReferenceList"></activity>
+        <activity android:name=".ReferenceList" />
+        <activity android:name=".SatelliteList"></activity>
     </application>
 
 </manifest>

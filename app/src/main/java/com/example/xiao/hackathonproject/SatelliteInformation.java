@@ -2,6 +2,7 @@ package com.example.xiao.hackathonproject;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.GnssStatus;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -30,6 +32,13 @@ public class SatelliteInformation extends AppCompatActivity {
     private TextView mFirstFix;
     private TextView mSatCount;
     private Switch switchListener;
+
+    //Connection to the button(to satellite list view) is below:
+    public void onClickToSatList(View v)
+    {
+        Intent myIntent = new Intent(this,SatelliteList.class);
+        startActivity(myIntent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
