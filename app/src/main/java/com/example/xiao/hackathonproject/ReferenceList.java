@@ -13,9 +13,9 @@ public class ReferenceList extends AppCompatActivity {
         setContentView(R.layout.activity_reference_list);
     }
 
-    public void onClickToMap(View v)
+    public void onClickGeoFriend(View v)
     {
-        Intent myIntent = new Intent(this,RoughLocation.class);
+        Intent myIntent = new Intent(this,LoginActivity.class);
         startActivity(myIntent);
     }
 }
