@@ -33,6 +33,8 @@ public class SatelliteInformation extends AppCompatActivity {
     private OnNmeaMessageListener nmeaMessageListener;
     private int[] lastGnssStatusSvid;
     private int[] lastGnssStatusConstellation;
+    private float[] lastGnssElevation;
+    private float[] lastGnssAzimuth;
 
     private TextView mLatitude;
     private TextView mLongitude;
@@ -50,6 +52,8 @@ public class SatelliteInformation extends AppCompatActivity {
         Intent myIntent = new Intent(this,SatelliteList.class);
         myIntent.putExtra("Svid",lastGnssStatusSvid);
         myIntent.putExtra("Constellation",lastGnssStatusConstellation);
+        myIntent.putExtra("Elevation Angle", lastGnssElevation);
+        myIntent.putExtra("Azimuth Angle", lastGnssAzimuth);
 
         startActivity(myIntent);
     }
@@ -124,6 +128,7 @@ public class SatelliteInformation extends AppCompatActivity {
         gnssNavigationMessageListener = new GnssNavigationMessage.Callback() {
             public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
                 // Returns the latest collected GNSS Navigation Message
+                // makeUseOfNavigationMessage();
             }
 
             public void onStatusChanged(int status) {
@@ -238,9 +243,13 @@ public class SatelliteInformation extends AppCompatActivity {
         mSatCount.setText(String.format("%s %d", getString(R.string.sat_count), status.getSatelliteCount()));
         lastGnssStatusSvid = new int[status.getSatelliteCount()];
         lastGnssStatusConstellation = new int[status.getSatelliteCount()];
+        lastGnssElevation = new float [status.getSatelliteCount()];
+        lastGnssAzimuth = new float[status.getSatelliteCount()];
         for (int i = 0; i < status.getSatelliteCount(); i++) {
             lastGnssStatusSvid[i] = status.getSvid(i);
             lastGnssStatusConstellation[i] = status.getConstellationType(i);
+            lastGnssElevation[i]= status.getElevationDegrees(i);
+            lastGnssAzimuth[i]= status.getAzimuthDegrees(i);
         }
     }
 
@@ -272,4 +281,8 @@ public class SatelliteInformation extends AppCompatActivity {
         }
         mNavMsgStatus.setText(String.format("%s %s", getString(R.string.nav_msg_status), gnssNavMsgStatus));
     }
+
+//    protected void makeUseOfNavigationMessage(){
+//        GnssNavigationMessage.
+//    }
 }

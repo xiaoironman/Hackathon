@@ -17,4 +17,9 @@
     <string name="to_sat_list">Satellites in List View</string>
     <string name="gnss_measurement_status">GNSS Measurement Status:</string>
     <string name="nav_msg_status">GNSS Navigation Message Status:</string>
+    <string name="sentence1">Yes! My Location is VERY ACCURATE, I want to help:</string>
+    <string name="broadcast_my_location">Broadcast My Location</string>
+    <string name="sentence2">Oh No! I need better accuracy, help me correct it!</string>
+    <string name="get_corrections">Get Corrections</string>
+    <string name="item">Click Satellite to See Details</string>
 </resources>

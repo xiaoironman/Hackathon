@@ -14,8 +14,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
-
 public class SatelliteList extends AppCompatActivity {
 
     private int NumberOfSatellites = 10;
@@ -27,7 +25,10 @@ public class SatelliteList extends AppCompatActivity {
         Intent intent = getIntent();
         int[] SvidArray = intent.getIntArrayExtra("Svid");
         int[] ConstellationArray = intent.getIntArrayExtra("Constellation");
+        float[] Elevation = intent.getFloatArrayExtra("Elevation Angle");
+        float[] Azimuth = intent.getFloatArrayExtra("Azimuth Angle");
         String[] SatInfo = new String[SvidArray.length];
+
 
         for (int i = 0; i < SatInfo.length; i++) {
             String constel = "";
@@ -35,9 +36,10 @@ public class SatelliteList extends AppCompatActivity {
                 case GnssStatus.CONSTELLATION_BEIDOU: constel = "BEIDOU"; break;
                 case GnssStatus.CONSTELLATION_GLONASS: constel = "GLONASS"; break;
                 case GnssStatus.CONSTELLATION_GPS: constel = "GPS"; break;
+                case GnssStatus.CONSTELLATION_GALILEO: constel= "GALILEO"; break;
                 default: constel = "UNKNOWN"; break;
             }
-            SatInfo[i] = String.format("SV ID: %d CONSTELLATION: %s",SvidArray[i],constel);
+            SatInfo[i] = String.format("SV ID: %d CONSTELLATION: %s \nThe elevation angle is: %f \nThe Azimuth Angle is: %f ",SvidArray[i],constel, Elevation[i],Azimuth[i]);
         }
 
         ListView listView = (ListView) findViewById(R.id.listView);
